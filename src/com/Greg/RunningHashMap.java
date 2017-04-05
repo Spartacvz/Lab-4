@@ -1,55 +1,57 @@
-/*package com.Greg;
+package com.Greg;
 
-import java.util.HashMap;
-import java.util.Collections;
+import java.util.*;
 
 public class RunningHashMap {
+
+    //Use this scanner to read text data that will be stored in String variables
+    static Scanner strScan = new Scanner(System.in);
+    //Use this scanner to read in numerical data that will be stored in int or double variables
+    static Scanner numScan = new Scanner(System.in);
+
     public static void main(String[] args) {
 
-        // Completed Array of lakes and lap times
-        HashMap<String, Double> lakeCedar = new HashMap<String, Double>();
-        lakeCedar.put("Cedar", 45.15);
-        lakeCedar.put("Cedar", 43.32);
+        // Store data in a HashMap
+        HashMap<String, ArrayList<Double>> lakeTimes = new HashMap<>();
 
-        // Completed Array of lakes and lap times
-        HashMap<String, Double> lakeHarriet = new HashMap<String, Double>();
-        lakeHarriet.put("Harriet", 49.34);
-        lakeHarriet.put("Harriet", 44.43);
-        lakeHarriet.put("Harriet", 46.22);
+        boolean moreTimes = true;
 
-        // Completed Array of lakes and lap times
-        HashMap<String, Double> lakeComo = new HashMap<String, Double>();
-        lakeComo.put("Como", 32.11);
-        lakeComo.put("Como", 28.14);
+        while (moreTimes) {
 
-// This is where I display ArrayList
-        for (String lake : lakeCedar.keySet()) {
-            // lake is a key
-            System.out.println("Lake: " + lakeCedar);
-            System.out.println("Lap time: " + lakeCedar.get(lakeCedar));
+            System.out.println("What is the name of the lake?");
+            String lake = strScan.nextLine();
+            System.out.println("How long did this lake take you?");
+            double time = numScan.nextDouble();
+
+            addTime(lakeTimes, lake, time);
+
+            System.out.println("Would you like to enter any additional times? ('y' or 'n')");
+            moreTimes = strScan.nextLine().equalsIgnoreCase("y");
+
         }
-
-        // This is where I display fastest time for first lake
-        System.out.println("The fastest time is " + Collections.min(lakeCedar));
-
-        // This is where I display ArrayList
-        for (String lake : lakeHarriet.keySet()) {
-            // lake is a key
-            System.out.println("Lake: " + lakeHarriet);
-            System.out.println("Lap time: " + lakeHarriet.get(lakeHarriet));
-        }
-
-        // This is where I display fastest time for second lake
-        System.out.println("The fastest time is " + Collections.min(lakeHarriet));
-
-        // This is where I display ArrayList
-        for (String month : lakeComo.keySet()) {
-            // lake is a key
-            System.out.println("Lake: " + lakeComo);
-            System.out.println("Lap time: " + lakeComo.get(lakeComo));
-        }
-
-        // This is where I display fastest time for first lake
-        System.out.println("The fastest time is " + Collections.min(lakeComo));
+        FastestTime(lakeTimes);
     }
-}*/
+
+    private static void FastestTime(HashMap<String, ArrayList<Double>> lakeTimes) {
+
+        for (String lake : lakeTimes.keySet()) {
+            ArrayList<Double> times = lakeTimes.get(lake);
+            double fastest = Collections.min(times);
+            System.out.println("The fastest time for " + lake + " was " + fastest);
+        }
+        strScan.close();   // Close scanners
+        numScan.close();   // Close scanners
+    }
+
+    private static void addTime(HashMap<String, ArrayList<Double>> lakeTimes, String lake, double time) {
+
+        if (lakeTimes.containsKey(lake)) {
+            lakeTimes.get(lake).add(time);   // Add additional lap times
+
+        } else{
+            ArrayList<Double> times = new ArrayList();  // Create new array list
+            times.add(time);    // Add new lap times
+            lakeTimes.put(lake, times);
+        }
+    }
+}
